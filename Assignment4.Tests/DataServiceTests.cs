@@ -38,7 +38,7 @@ public class DataServiceTests
         Assert.Equal("Test", category.Name);
         Assert.Equal("CreateCategory_ValidData_CreteCategoryAndReturnsNewObject", category.Description);
 
-        // cleanup
+        //cleanup
         service.DeleteCategory(category.Id);
     }
 
@@ -96,7 +96,7 @@ public class DataServiceTests
         var product = new Product();
         Assert.Equal(0, product.Id);
         Assert.Null(product.Name);
-        Assert.Equal(0.0, product.UnitPrice);
+        Assert.Equal(0, product.UnitPrice);
         Assert.Null(product.QuantityPerUnit);
         Assert.Equal(0, product.UnitsInStock);
     }
@@ -118,7 +118,7 @@ public class DataServiceTests
         Assert.Equal(12, products.Count);
         Assert.Equal("Chai", products.First().Name);
         Assert.Equal("Beverages", products.First().CategoryName);
-        Assert.Equal("Lakkalikˆˆri", products.Last().Name);
+        Assert.Equal("Lakkalik√∂√∂ri", products.Last().Name);
     }
 
     [Fact]
@@ -127,7 +127,7 @@ public class DataServiceTests
         var service = new DataService();
         var products = service.GetProductByName("em");
         Assert.Equal(4, products.Count);
-        Assert.Equal("NuNuCa Nuﬂ-Nougat-Creme", products.First().ProductName);
+        Assert.Equal("NuNuCa Nu√ü-Nougat-Creme", products.First().ProductName);
         Assert.Equal("Confections", products.First().CategoryName);
         Assert.Equal("Flotemysost", products.Last().ProductName);
     }
@@ -168,14 +168,14 @@ public class DataServiceTests
     [Fact]
     public void OrderDetails_Object_HasOrderProductUnitPriceQuantityAndDiscount()
     {
-        var orderDetails = new OrderDetails();
+        var orderDetails = new OrderDetail();
         Assert.Equal(0, orderDetails.OrderId);
         Assert.Null(orderDetails.Order);
         Assert.Equal(0, orderDetails.ProductId);
         Assert.Null(orderDetails.Product);
-        Assert.Equal(0.0, orderDetails.UnitPrice);
-        Assert.Equal(0.0, orderDetails.Quantity);
-        Assert.Equal(0.0, orderDetails.Discount);
+        Assert.Equal(0, orderDetails.UnitPrice);
+        Assert.Equal(0, orderDetails.Quantity);
+        Assert.Equal(0, orderDetails.Discount);
     }
 
     [Fact]
