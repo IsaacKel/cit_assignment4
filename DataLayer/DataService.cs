@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -49,9 +50,25 @@ public class DataService
 
             return true;
         }
-
-
-
     }
+    public bool UpdateCategory(int requested_ID, string categoryName, string categoryDescription)
+        {
+        var db = new NorthwindContext();
+        var myCategory = db.Categories.FirstOrDefault(c => c.Id == requested_ID);
+        if (myCategory == null) { return false; }
+        else
+        {
+            myCategory.Id = requested_ID;
+            myCategory.Name = categoryName;
+            myCategory.Description = categoryDescription;
+           
+            db.SaveChanges();
+
+            return true;
+        }
+    }
+
+
+   
 
 }
