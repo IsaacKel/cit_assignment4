@@ -1,0 +1,7 @@
+/Users/isaackelsall/Documents/GitHub/cit_assignment4/Assignment4.Tests/bin/Debug/net7.0/CoverletSourceRootsMapping
+/Users/isaackelsall/Documents/GitHub/cit_assignment4/Assignment4.Tests/obj/Debug/net7.0/Assignment4.Tests.csproj.AssemblyReference.cache
+/Users/isaackelsall/Documents/GitHub/cit_assignment4/Assignment4.Tests/obj/Debug/net7.0/Assignment4.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/Users/isaackelsall/Documents/GitHub/cit_assignment4/Assignment4.Tests/obj/Debug/net7.0/Assignment4.Tests.AssemblyInfoInputs.cache
+/Users/isaackelsall/Documents/GitHub/cit_assignment4/Assignment4.Tests/obj/Debug/net7.0/Assignment4.Tests.AssemblyInfo.cs
+/Users/isaackelsall/Documents/GitHub/cit_assignment4/Assignment4.Tests/obj/Debug/net7.0/Assignment4.Tests.csproj.CoreCompileInputs.cache
+/Users/isaackelsall/Documents/GitHub/cit_assignment4/Assignment4.Tests/obj/Debug/net7.0/Assignment4.Tests.sourcelink.json
