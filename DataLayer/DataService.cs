@@ -41,9 +41,17 @@ public class DataService
     {
         var db = new NorthwindContext();
         var myCategory = db.Categories.FirstOrDefault(c => c.Id == requested_ID);
-         db.Categories.Remove(myCategory);
-        db.SaveChanges();
-        return true;
+        if (myCategory == null) { return false; }
+        else
+        {
+            db.Categories.Remove(myCategory);
+            db.SaveChanges();
+
+            return true;
+        }
+
+
+
     }
 
 }
