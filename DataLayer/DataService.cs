@@ -9,7 +9,7 @@ namespace DataLayer;
 
 public class DataService
 {   
-    public IList<Category> GetCategories  () {
+    public IList<Category> GetCategories() {
         var db = new NorthwindContext();
         return db.Categories.ToList();
     }
@@ -36,6 +36,14 @@ public class DataService
         db.SaveChanges();
 
         return myCategory;
+    }
+    public bool DeleteCategory(int requested_ID)
+    {
+        var db = new NorthwindContext();
+        var myCategory = db.Categories.FirstOrDefault(c => c.Id == requested_ID);
+         db.Categories.Remove(myCategory);
+        db.SaveChanges();
+        return true;
     }
 
 }
