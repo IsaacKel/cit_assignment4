@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -9,8 +10,9 @@ using System.Xml.Linq;
 namespace DataLayer;
 
 public class DataService
-{   
-    public IList<Category> GetCategories() {
+{
+    public IList<Category> GetCategories()
+    {
         var db = new NorthwindContext();
         return db.Categories.ToList();
     }
@@ -52,7 +54,7 @@ public class DataService
         }
     }
     public bool UpdateCategory(int requested_ID, string categoryName, string categoryDescription)
-        {
+    {
         var db = new NorthwindContext();
         var myCategory = db.Categories.FirstOrDefault(c => c.Id == requested_ID);
         if (myCategory == null) { return false; }
@@ -61,14 +63,31 @@ public class DataService
             myCategory.Id = requested_ID;
             myCategory.Name = categoryName;
             myCategory.Description = categoryDescription;
-           
+
             db.SaveChanges();
 
             return true;
         }
     }
+    public Product GetProduct(int requested_ID)
+    {
+        using var db = new NorthwindContext();
+        var myProduct = db.Products.Include(p => p.Category)
+                                   .FirstOrDefault(p => p.Id == requested_ID);
 
+        if (myProduct != null && myProduct.Category != null)
+        {
+            myProduct.CategoryName = myProduct.Category.Name;
+        }
 
-   
+        return myProduct;
+    }
 
 }
+
+
+
+
+
+
+
