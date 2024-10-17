@@ -11,7 +11,7 @@ namespace DataLayer
         public int Id { get; set; }
         public string? CustomerId { get; set; }
         public int EmployeeId { get; set; }
-        public List<OrderDetail>? OrderDetails { get; set; } = new List<OrderDetail>();
+        public List<OrderDetails>? OrderDetails { get; set; }
         public DateTime Date { get; set; }
         public DateTime Required { get; set; }
         public DateTime? ShippedDate { get; set; }
