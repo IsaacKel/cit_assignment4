@@ -11,6 +11,8 @@ internal class NorthwindContext : DbContext
 {
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -24,6 +26,7 @@ internal class NorthwindContext : DbContext
         MapCategories(modelBuilder);
         MapProducts(modelBuilder);
         MapOrders(modelBuilder);
+        MapOrderDetails(modelBuilder);
     }
 
     private static void MapCategories(ModelBuilder modelBuilder)
@@ -52,7 +55,7 @@ internal class NorthwindContext : DbContext
 
     private static void MapOrders(ModelBuilder modelBuilder)
     {
-        // Orders
+        // Orders Mapping
         modelBuilder.Entity<Order>().ToTable("orders");
         modelBuilder.Entity<Order>().Property(x => x.Id).HasColumnName("orderid");
         modelBuilder.Entity<Order>().Property(x => x.CustomerId).HasColumnName("customerid");
@@ -60,14 +63,28 @@ internal class NorthwindContext : DbContext
         modelBuilder.Entity<Order>().Property(x => x.Date).HasColumnName("orderdate");
         modelBuilder.Entity<Order>().Property(x => x.Required).HasColumnName("requireddate");
         modelBuilder.Entity<Order>().Property(x => x.ShippedDate).HasColumnName("shippeddate");
-        modelBuilder.Entity<Order>().Property(x => x.ShipVia).HasColumnName("shipvia");
         modelBuilder.Entity<Order>().Property(x => x.Freight).HasColumnName("freight");
         modelBuilder.Entity<Order>().Property(x => x.ShipName).HasColumnName("shipname");
         modelBuilder.Entity<Order>().Property(x => x.ShipAddress).HasColumnName("shipaddress");
         modelBuilder.Entity<Order>().Property(x => x.ShipCity).HasColumnName("shipcity");
-        modelBuilder.Entity<Order>().Property(x => x.ShipRegion).HasColumnName("shipregion");
+       // modelBuilder.Entity<Order>().Property(x => x.ShipRegion).HasColumnName("shipregion"); // REMOVE THIS LINE
         modelBuilder.Entity<Order>().Property(x => x.ShipPostalCode).HasColumnName("shippostalcode");
         modelBuilder.Entity<Order>().Property(x => x.ShipCountry).HasColumnName("shipcountry");
-        //modelBuilder.Entity<Order>().HasOne(x => x.Customer).WithMany().HasForeignKey(x => x.CustomerId);
+        modelBuilder.Entity<Order>().HasMany(x => x.OrderDetails).WithOne(x => x.Order).HasForeignKey(x => x.OrderId);
+    }
+
+
+    private static void MapOrderDetails(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<OrderDetail>().ToTable("orderdetails");
+        modelBuilder.Entity<OrderDetail>().HasKey(x => new { x.OrderId, x.ProductId });
+        modelBuilder.Entity<OrderDetail>().Property(x => x.OrderId).HasColumnName("orderid");
+        modelBuilder.Entity<OrderDetail>().Property(x => x.ProductId).HasColumnName("productid");
+        modelBuilder.Entity<OrderDetail>().Property(x => x.UnitPrice).HasColumnName("unitprice");
+        modelBuilder.Entity<OrderDetail>().Property(x => x.Quantity).HasColumnName("quantity");
+        modelBuilder.Entity<OrderDetail>().Property(x => x.Discount).HasColumnName("discount");
+        modelBuilder.Entity<OrderDetail>().HasOne(x => x.Order).WithMany(x => x.OrderDetails).HasForeignKey(x => x.OrderId);
+        modelBuilder.Entity<OrderDetail>().HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
+
     }
 }

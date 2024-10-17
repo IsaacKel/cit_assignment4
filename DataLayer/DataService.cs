@@ -119,6 +119,16 @@ public class DataService
         return products;
     }
 
+    public Order GetOrder(int requested_ID)
+    {
+        using var db = new NorthwindContext();
+        var myOrder = db.Orders
+                        .Include(o => o.OrderDetails)
+                        .ThenInclude(od => od.Product)
+                        .ThenInclude(p => p.Category)
+                        .FirstOrDefault(o => o.Id == requested_ID);
+        return myOrder;
+    }
 
     public Product CreateProduct(string productName, double unitPrice, string quantityPerUnit, int unitsInStock, int categoryID)
     {
