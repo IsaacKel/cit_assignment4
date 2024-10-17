@@ -15,8 +15,9 @@ internal class NorthwindContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
-        optionsBuilder.UseNpgsql("host=localhost;db=postgres;uid=postgres;pwd=postgres");
+        optionsBuilder.UseNpgsql("host=localhost;db=postgres;uid=postgres;pwd=postgres;Encoding=UTF8");
     }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +40,7 @@ internal class NorthwindContext : DbContext
         modelBuilder.Entity<Product>().ToTable("products");
         modelBuilder.Entity<Product>().Property(x => x.Id).HasColumnName("productid");
         modelBuilder.Entity<Product>().Property(x => x.Name).HasColumnName("productname");
+        modelBuilder.Entity<Product>().Property(x => x.ProductName).HasColumnName("productname");
         modelBuilder.Entity<Product>().Property(x => x.UnitPrice).HasColumnName("unitprice");
         modelBuilder.Entity<Product>().Property(x => x.QuantityPerUnit).HasColumnName("quantityperunit");
         modelBuilder.Entity<Product>().Property(x => x.UnitsInStock).HasColumnName("unitsinstock");

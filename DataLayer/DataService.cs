@@ -72,16 +72,107 @@ public class DataService
     public Product GetProduct(int requested_ID)
     {
         using var db = new NorthwindContext();
-        var myProduct = db.Products.Include(p => p.Category)
-                                   .FirstOrDefault(p => p.Id == requested_ID);
-
-        if (myProduct != null && myProduct.Category != null)
-        {
-            myProduct.CategoryName = myProduct.Category.Name;
-        }
+        var myProduct = db.Products.Include(p => p.Category).FirstOrDefault(p => p.Id == requested_ID);
+        
+        myProduct.CategoryName = myProduct.Category.Name;
 
         return myProduct;
     }
+
+    public IList<Product> GetProductByCategory(int requested_ID)
+    {
+        using var db = new NorthwindContext();
+        var products = db.Products.Include(p => p.Category)
+                                  .Where(p => p.CategoryId == requested_ID)
+                                  .OrderBy(p => p.Id) // Ensure consistent order
+                                  .ToList();
+
+        // Populate CategoryName manually
+        foreach (var product in products)
+        {
+            if (product.Category != null)
+            {
+                product.CategoryName = product.Category.Name;
+            }
+        }
+
+        return products;
+    }
+    
+    public IList<Product> GetProductByName(string requested_Name)
+    {
+        using var db = new NorthwindContext();
+        var products = db.Products.Include(p => p.Category)
+                                  .Where(p => p.Name.Contains(requested_Name))
+                                  .OrderBy(p => p.Id) // Ensure consistent order
+                                  .ToList();
+
+        // Populate CategoryName manually
+        foreach (var product in products)
+        {
+            if (product.Category != null)
+            {
+                product.CategoryName = product.Category.Name;
+            }
+        }
+
+        return products;
+    }
+
+
+    public Product CreateProduct(string productName, double unitPrice, string quantityPerUnit, int unitsInStock, int categoryID)
+    {
+        using var db = new NorthwindContext();
+        int id = db.Products.Max(x => x.Id) + 1;
+        var myProduct = new Product
+        {
+            Id = id,
+            Name = productName,
+            UnitPrice = unitPrice,
+            QuantityPerUnit = quantityPerUnit,
+            UnitsInStock = unitsInStock,
+            CategoryId = categoryID
+        };
+
+        db.Products.Add(myProduct);
+
+        db.SaveChanges();
+
+        return myProduct;
+    }
+    public bool DeleteProduct(int requested_ID)
+    {
+        using var db = new NorthwindContext();
+        var myProduct = db.Products.FirstOrDefault(p => p.Id == requested_ID);
+        if (myProduct == null) { return false; }
+        else
+        {
+            db.Products.Remove(myProduct);
+            db.SaveChanges();
+
+            return true;
+        }
+    }
+    public bool UpdateProduct(int requested_ID, string productName, double unitPrice, string quantityPerUnit, int unitsInStock, int categoryID)
+    {
+        using var db = new NorthwindContext();
+        var myProduct = db.Products.FirstOrDefault(p => p.Id == requested_ID);
+        if (myProduct == null) { return false; }
+        else
+        {
+            myProduct.Id = requested_ID;
+            myProduct.Name = productName;
+            myProduct.UnitPrice = unitPrice;
+            myProduct.QuantityPerUnit = quantityPerUnit;
+            myProduct.UnitsInStock = unitsInStock;
+            myProduct.CategoryId = categoryID;
+
+            db.SaveChanges();
+
+            return true;
+        }
+    }
+
 
 }
 
