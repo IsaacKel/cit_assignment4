@@ -130,58 +130,83 @@ public class DataService
         return myOrder;
     }
 
-    public Product CreateProduct(string productName, double unitPrice, string quantityPerUnit, int unitsInStock, int categoryID)
+
+    public List<OrderDetails> GetOrderDetailsByOrderId(int orderId)
     {
         using var db = new NorthwindContext();
-        int id = db.Products.Max(x => x.Id) + 1;
-        var myProduct = new Product
-        {
-            Id = id,
-            Name = productName,
-            UnitPrice = unitPrice,
-            QuantityPerUnit = quantityPerUnit,
-            UnitsInStock = unitsInStock,
-            CategoryId = categoryID
-        };
-
-        db.Products.Add(myProduct);
-
-        db.SaveChanges();
-
-        return myProduct;
+        return db.OrderDetails
+                 .Include(od => od.Product)
+                 .Where(od => od.OrderId == orderId)
+                 .ToList();
     }
-    public bool DeleteProduct(int requested_ID)
+
+    public List<OrderDetails> GetOrderDetailsByProductId(int productId)
     {
         using var db = new NorthwindContext();
-        var myProduct = db.Products.FirstOrDefault(p => p.Id == requested_ID);
-        if (myProduct == null) { return false; }
-        else
-        {
-            db.Products.Remove(myProduct);
-            db.SaveChanges();
-
-            return true;
-        }
+        return db.OrderDetails
+                 .Include(od => od.Order)
+                 .Where(od => od.ProductId == productId)
+                 .OrderBy(od => od.OrderId)
+                 .ToList();
     }
-    public bool UpdateProduct(int requested_ID, string productName, double unitPrice, string quantityPerUnit, int unitsInStock, int categoryID)
+
+    public List<Order> GetOrders()
     {
         using var db = new NorthwindContext();
-        var myProduct = db.Products.FirstOrDefault(p => p.Id == requested_ID);
-        if (myProduct == null) { return false; }
-        else
-        {
-            myProduct.Id = requested_ID;
-            myProduct.Name = productName;
-            myProduct.UnitPrice = unitPrice;
-            myProduct.QuantityPerUnit = quantityPerUnit;
-            myProduct.UnitsInStock = unitsInStock;
-            myProduct.CategoryId = categoryID;
-
-            db.SaveChanges();
-
-            return true;
-        }
+        return db.Orders.Include(o => o.OrderDetails).ToList();
     }
+    //public Product CreateProduct(string productName, double unitPrice, string quantityPerUnit, int unitsInStock, int categoryID)
+    //{
+    //    using var db = new NorthwindContext();
+    //    int id = db.Products.Max(x => x.Id) + 1;
+    //    var myProduct = new Product
+    //    {
+    //        Id = id,
+    //        Name = productName,
+    //        UnitPrice = unitPrice,
+    //        QuantityPerUnit = quantityPerUnit,
+    //        UnitsInStock = unitsInStock,
+    //        CategoryId = categoryID
+    //    };
+
+    //    db.Products.Add(myProduct);
+
+    //    db.SaveChanges();
+
+    //    return myProduct;
+    //}
+    //public bool DeleteProduct(int requested_ID)
+    //{
+    //    using var db = new NorthwindContext();
+    //    var myProduct = db.Products.FirstOrDefault(p => p.Id == requested_ID);
+    //    if (myProduct == null) { return false; }
+    //    else
+    //    {
+    //        db.Products.Remove(myProduct);
+    //        db.SaveChanges();
+
+    //        return true;
+    //    }
+    //}
+    //public bool UpdateProduct(int requested_ID, string productName, double unitPrice, string quantityPerUnit, int unitsInStock, int categoryID)
+    //{
+    //    using var db = new NorthwindContext();
+    //    var myProduct = db.Products.FirstOrDefault(p => p.Id == requested_ID);
+    //    if (myProduct == null) { return false; }
+    //    else
+    //    {
+    //        myProduct.Id = requested_ID;
+    //        myProduct.Name = productName;
+    //        myProduct.UnitPrice = unitPrice;
+    //        myProduct.QuantityPerUnit = quantityPerUnit;
+    //        myProduct.UnitsInStock = unitsInStock;
+    //        myProduct.CategoryId = categoryID;
+
+    //        db.SaveChanges();
+
+    //        return true;
+    //    }
+    //}
 
 
 }

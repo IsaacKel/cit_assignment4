@@ -12,7 +12,7 @@ internal class NorthwindContext : DbContext
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;
-    public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+    public DbSet<OrderDetails> OrderDetails { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -67,7 +67,6 @@ internal class NorthwindContext : DbContext
         modelBuilder.Entity<Order>().Property(x => x.ShipName).HasColumnName("shipname");
         modelBuilder.Entity<Order>().Property(x => x.ShipAddress).HasColumnName("shipaddress");
         modelBuilder.Entity<Order>().Property(x => x.ShipCity).HasColumnName("shipcity");
-       // modelBuilder.Entity<Order>().Property(x => x.ShipRegion).HasColumnName("shipregion"); // REMOVE THIS LINE
         modelBuilder.Entity<Order>().Property(x => x.ShipPostalCode).HasColumnName("shippostalcode");
         modelBuilder.Entity<Order>().Property(x => x.ShipCountry).HasColumnName("shipcountry");
         modelBuilder.Entity<Order>().HasMany(x => x.OrderDetails).WithOne(x => x.Order).HasForeignKey(x => x.OrderId);
@@ -76,15 +75,15 @@ internal class NorthwindContext : DbContext
 
     private static void MapOrderDetails(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<OrderDetail>().ToTable("orderdetails");
-        modelBuilder.Entity<OrderDetail>().HasKey(x => new { x.OrderId, x.ProductId });
-        modelBuilder.Entity<OrderDetail>().Property(x => x.OrderId).HasColumnName("orderid");
-        modelBuilder.Entity<OrderDetail>().Property(x => x.ProductId).HasColumnName("productid");
-        modelBuilder.Entity<OrderDetail>().Property(x => x.UnitPrice).HasColumnName("unitprice");
-        modelBuilder.Entity<OrderDetail>().Property(x => x.Quantity).HasColumnName("quantity");
-        modelBuilder.Entity<OrderDetail>().Property(x => x.Discount).HasColumnName("discount");
-        modelBuilder.Entity<OrderDetail>().HasOne(x => x.Order).WithMany(x => x.OrderDetails).HasForeignKey(x => x.OrderId);
-        modelBuilder.Entity<OrderDetail>().HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
+        modelBuilder.Entity<OrderDetails>().ToTable("orderdetails");
+        modelBuilder.Entity<OrderDetails>().HasKey(x => new { x.OrderId, x.ProductId });
+        modelBuilder.Entity<OrderDetails>().Property(x => x.OrderId).HasColumnName("orderid");
+        modelBuilder.Entity<OrderDetails>().Property(x => x.ProductId).HasColumnName("productid");
+        modelBuilder.Entity<OrderDetails>().Property(x => x.UnitPrice).HasColumnName("unitprice");
+        modelBuilder.Entity<OrderDetails>().Property(x => x.Quantity).HasColumnName("quantity");
+        modelBuilder.Entity<OrderDetails>().Property(x => x.Discount).HasColumnName("discount");
+        modelBuilder.Entity<OrderDetails>().HasOne(x => x.Order).WithMany(x => x.OrderDetails).HasForeignKey(x => x.OrderId);
+        modelBuilder.Entity<OrderDetails>().HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
 
     }
 }
