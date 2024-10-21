@@ -1,3 +1,4 @@
+Ôªøusing DataLayer;
 namespace Assignment4.Tests;
 
 public class DataServiceTests
@@ -109,25 +110,27 @@ public class DataServiceTests
         Assert.Equal("Chai", product.Name);
         Assert.Equal("Beverages", product.CategoryName);
     }
-
     [Fact]
     public void GetProductsByCategory_ValidId_ReturnsProductWithCategory()
     {
         var service = new DataService();
         var products = service.GetProductByCategory(1);
+
         Assert.Equal(12, products.Count);
         Assert.Equal("Chai", products.First().Name);
         Assert.Equal("Beverages", products.First().CategoryName);
-        Assert.Equal("Lakkalikˆˆri", products.Last().Name);
+        Assert.Equal("Lakkalik√∂√∂ri", products.Last().Name); // Update expected value
     }
+
 
     [Fact]
     public void GetProduct_NameSubString_ReturnsProductsThatMatchesTheSubString()
     {
         var service = new DataService();
         var products = service.GetProductByName("em");
+
         Assert.Equal(4, products.Count);
-        Assert.Equal("NuNuCa Nuﬂ-Nougat-Creme", products.First().ProductName);
+        Assert.Equal("NuNuCa Nu√ü-Nougat-Creme", products.First().ProductName); // Updated expected value
         Assert.Equal("Confections", products.First().CategoryName);
         Assert.Equal("Flotemysost", products.Last().ProductName);
     }
@@ -169,7 +172,7 @@ public class DataServiceTests
     public void OrderDetails_Object_HasOrderProductUnitPriceQuantityAndDiscount()
     {
         var orderDetails = new OrderDetails();
-        Assert.Equal(0, orderDetails.OrderId); 
+        Assert.Equal(0, orderDetails.OrderId);
         Assert.Null(orderDetails.Order);
         Assert.Equal(0, orderDetails.ProductId);
         Assert.Null(orderDetails.Product);
